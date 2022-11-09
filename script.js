@@ -41,10 +41,10 @@ const createUserCard = (user) => {
 }
 
 const renderUsers = async () => {
-  topMessage.style.display = "none"
   let users = await getData()
   console.log(users)
   users.forEach((user) => createUserCard(user))
+  topMessage.style.display = "none"
   showMoreButtonsHandler()
 }
 
@@ -84,7 +84,6 @@ const showMoreData = (e) => {
 
 const showMoreButtonsHandler = () => {
   const showButtons = document.querySelectorAll("button")
-  console.log(showButtons)
   showButtons.forEach((button) => {
     button.addEventListener("click", showMoreData)
   })
