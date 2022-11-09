@@ -4,6 +4,10 @@ searchBar.setAttribute("placeholder", "search")
 document.getElementById("root").append(searchBar)
 const cardsSection = document.createElement("section")
 cardsSection.id = "cards"
+const topMessage = document.createElement("p")
+topMessage.id = "message"
+topMessage.innerText = "Loading..."
+document.getElementById("root").append(topMessage)
 document.getElementById("root").append(cardsSection)
 
 const getData = async () => {
@@ -37,21 +41,33 @@ const createUserCard = (user) => {
 }
 
 const renderUsers = async () => {
+  topMessage.style.display = "none"
   let users = await getData()
   console.log(users)
   users.forEach((user) => createUserCard(user))
   showMoreButtonsHandler()
 }
 
+let visibleUsersCount
+
 const filterUsers = (e) => {
   const inputValue = e.target.value
   const userCards = document.querySelectorAll(".usercard")
+  visibleUsersCount = 0
   for (const card of userCards) {
-    console.log(card)
     const isVisible = card.childNodes[1].innerText.includes(inputValue)
-    if (!isVisible) card.style.display = "none"
-    else card.style.display = "flex"
+    if (!isVisible) 
+      card.style.display = "none"
+    else {
+      card.style.display = "flex"
+      visibleUsersCount++
+    }
   }
+  if (visibleUsersCount === 0) {
+    topMessage.style.display = "block"
+    topMessage.innerText = "Nothing found"
+  }
+  else topMessage.style.display = "none"
 }
 
 const showMoreData = (e) => {
